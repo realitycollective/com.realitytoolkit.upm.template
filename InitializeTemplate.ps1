@@ -6,7 +6,7 @@
 # * Run powershell in the cloned folder
 # * Run this template initialization script with the suffix of the project being generated
 # 	E.G.
-#	./InitialiseTemplate.ps1 WindowsXR
+#	    ./InitialiseTemplate.ps1 WindowsXR
 # * Once run, delete the InitializeTemplate script
 # * Copy the cloned project into the RealityToolkit.dev project in the packages folder
 # * Open Unity to generate the required meta files for the solution
@@ -25,6 +25,7 @@
 $templateVar = 'UPMTEMPLATE'
 $lowerProjectName = $ProjectName.ToLower().Replace('-','_')
 $upperProjectName = $ProjectName.Toupper().Replace('-','_').Replace(".","_")
+$newProjectGuid = [guid]::NewGuid()
 
 if ( -not (Test-Path ".\Documentation~\com.realitytoolkit.$templateVar.md")) 
 {
@@ -47,6 +48,9 @@ Get-ChildItem ".\*.cs" -Recurse | ForEach-Object -Process {
 }
 Get-ChildItem ".\*.cs" -Recurse | ForEach-Object -Process {
     (Get-Content $_) -Replace $templateVar, $lowerProjectName | Set-Content $_
+}
+Get-ChildItem ".\*.cs" -Recurse | ForEach-Object -Process {
+    (Get-Content $_) -Replace "$templateVarGUID", $newProjectGuid | Set-Content $_
 }
 Get-ChildItem ".\*.md" -Recurse | ForEach-Object -Process {
     (Get-Content $_) -Replace $templateVar, $lowerProjectName | Set-Content $_
