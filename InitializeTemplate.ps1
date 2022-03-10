@@ -23,6 +23,7 @@
     )
 
 $templateVar = 'UPMTEMPLATE'
+$templateVarGUID = 'UPMTEMPLATEGUID'
 $lowerProjectName = $ProjectName.ToLower().Replace('-','_')
 $upperProjectName = $ProjectName.Toupper().Replace('-','_').Replace(".","_")
 $newProjectGuid = [guid]::NewGuid()
@@ -44,13 +45,13 @@ Get-ChildItem ".\*.json" -Recurse | ForEach-Object -Process {
     (Get-Content $_) -Replace $templateVar, $lowerProjectName | Set-Content $_
 }
 Get-ChildItem ".\*.cs" -Recurse | ForEach-Object -Process {
+    (Get-Content $_) -Replace $templateVarGUID, $newProjectGuid | Set-Content $_
+}
+Get-ChildItem ".\*.cs" -Recurse | ForEach-Object -Process {
     (Get-Content $_) -Replace "REALITYTOOLKIT_$templateVar", "REALITYTOOLKIT_$upperProjectName" | Set-Content $_
 }
 Get-ChildItem ".\*.cs" -Recurse | ForEach-Object -Process {
     (Get-Content $_) -Replace $templateVar, $lowerProjectName | Set-Content $_
-}
-Get-ChildItem ".\*.cs" -Recurse | ForEach-Object -Process {
-    (Get-Content $_) -Replace "$templateVarGUID", $newProjectGuid | Set-Content $_
 }
 Get-ChildItem ".\*.md" -Recurse | ForEach-Object -Process {
     (Get-Content $_) -Replace $templateVar, $lowerProjectName | Set-Content $_
