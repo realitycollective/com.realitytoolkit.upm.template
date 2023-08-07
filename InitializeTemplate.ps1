@@ -24,6 +24,7 @@
 
 $templateVar = 'UPMTEMPLATE'
 $templateVarGUID = 'UPMTEMPLATEGUID'
+$cleanProjectName = $ProjectName.Replace('.','_').Replace('-','_')
 $lowerProjectName = $ProjectName.ToLower().Replace('-','_')
 $upperProjectName = $ProjectName.Toupper().Replace('-','_').Replace(".","_")
 $newProjectGuid = [guid]::NewGuid()
@@ -51,17 +52,17 @@ Get-ChildItem ".\*.cs" -Recurse | ForEach-Object -Process {
     (Get-Content $_) -Replace "REALITYTOOLKIT_$templateVar", "REALITYTOOLKIT_$upperProjectName" | Set-Content $_
 }
 Get-ChildItem ".\*.cs" -Recurse | ForEach-Object -Process {
-    (Get-Content $_) -Replace $templateVar, $ProjectName | Set-Content $_
+    (Get-Content $_) -Replace $templateVar, $cleanProjectName | Set-Content $_
 }
 Get-ChildItem ".\*.md" -Recurse | ForEach-Object -Process {
     (Get-Content $_) -Replace $templateVar, $lowerProjectName | Set-Content $_
 }
 Get-ChildItem ".\*.asmdef" -Recurse | ForEach-Object -Process {
-    (Get-Content $_) -Replace $templateVar, $ProjectName | Set-Content $_
+    (Get-Content $_) -Replace $templateVar, $cleanProjectName | Set-Content $_
 }
 
 #Rename files#
 ChildItem .\Documentation~ -Recurse | Where-Object { $_.name -like "*$templateVar*"} | Rename-Item -NewName { $_.name -replace $templateVar, $lowerProjectName}
-ChildItem .\ -Recurse | Where-Object { $_.name -like "*$templateVar*"} | Rename-Item -NewName { $_.name -replace $templateVar, $ProjectName}
+ChildItem .\ -Recurse | Where-Object { $_.name -like "*$templateVar*"} | Rename-Item -NewName { $_.name -replace $templateVar, $cleanProjectName}
 
 echo "package name: $ProjectName"
