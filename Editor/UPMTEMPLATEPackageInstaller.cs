@@ -1,32 +1,35 @@
 // Copyright (c) Reality Collective. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using RealityCollective.Editor.Utilities;
+using RealityCollective.Extensions;
+using RealityCollective.ServiceFramework;
+using RealityCollective.ServiceFramework.Editor;
+using RealityCollective.ServiceFramework.Editor.Packages;
 using System.IO;
 using UnityEditor;
-using XRTK.Editor;
-using XRTK.Editor.Utilities;
-using XRTK.Extensions;
+using UnityEngine;
 
 namespace RealityToolkit.UPMTEMPLATE.Editor
 {
     [InitializeOnLoad]
     internal static class UPMTEMPLATEPackageInstaller
     {
-        private static readonly string DefaultPath = $"{MixedRealityPreferences.ProfileGenerationPath}UPMTEMPLATE";
-        private static readonly string HiddenPath = Path.GetFullPath($"{PathFinderUtility.ResolvePath<IPathFinder>(typeof(UPMTEMPLATEPathFinder)).ForwardSlashes()}{Path.DirectorySeparatorChar}{MixedRealityPreferences.HIDDEN_PACKAGE_ASSETS_PATH}");
+        private static readonly string destinationPath = Application.dataPath + "/RealityToolkit.Generated/UPMTEMPLATE";
+        private static readonly string sourcePath = Path.GetFullPath($"{PathFinderUtility.ResolvePath<IPathFinder>(typeof(UPMTEMPLATEPackagePathFinder)).ForwardSlashes()}{Path.DirectorySeparatorChar}{"Assets~"}");
 
         static UPMTEMPLATEPackageInstaller()
         {
             EditorApplication.delayCall += CheckPackage;
         }
 
-        [MenuItem("Reality Toolkit/Packages/Install UPMTEMPLATE Package Assets...", true)]
+        [MenuItem(ServiceFrameworkPreferences.Editor_Menu_Keyword + "/Reality Toolkit/Packages/Install UPMTEMPLATE Package Assets...", true)]
         private static bool ImportPackageAssetsValidation()
         {
-            return !Directory.Exists($"{DefaultPath}{Path.DirectorySeparatorChar}");
+            return !Directory.Exists($"{destinationPath}{Path.DirectorySeparatorChar}");
         }
 
-        [MenuItem("Reality Toolkit/Packages/Install UPMTEMPLATE Package Assets...")]
+        [MenuItem(ServiceFrameworkPreferences.Editor_Menu_Keyword + "/Reality Toolkit/Packages/Install UPMTEMPLATE Package Assets...")]
         private static void ImportPackageAssets()
         {
             EditorPreferences.Set($"{nameof(UPMTEMPLATEPackageInstaller)}.Assets", false);
@@ -37,7 +40,7 @@ namespace RealityToolkit.UPMTEMPLATE.Editor
         {
             if (!EditorPreferences.Get($"{nameof(UPMTEMPLATEPackageInstaller)}.Assets", false))
             {
-                EditorPreferences.Set($"{nameof(UPMTEMPLATEPackageInstaller)}.Assets", PackageInstaller.TryInstallAssets(HiddenPath, DefaultPath));
+                EditorPreferences.Set($"{nameof(UPMTEMPLATEPackageInstaller)}.Assets", AssetsInstaller.TryInstallAssets(sourcePath, destinationPath));
             }
         }
     }
