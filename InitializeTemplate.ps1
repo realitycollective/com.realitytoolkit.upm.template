@@ -51,19 +51,17 @@ Get-ChildItem ".\*.cs" -Recurse | ForEach-Object -Process {
     (Get-Content $_) -Replace "REALITYTOOLKIT_$templateVar", "REALITYTOOLKIT_$upperProjectName" | Set-Content $_
 }
 Get-ChildItem ".\*.cs" -Recurse | ForEach-Object -Process {
-    (Get-Content $_) -Replace $templateVar, $lowerProjectName | Set-Content $_
+    (Get-Content $_) -Replace $templateVar, $ProjectName | Set-Content $_
 }
 Get-ChildItem ".\*.md" -Recurse | ForEach-Object -Process {
     (Get-Content $_) -Replace $templateVar, $lowerProjectName | Set-Content $_
 }
-Get-ChildItem ".\*.json" -Recurse | ForEach-Object -Process {
-    (Get-Content $_) -Replace $templateVar, $lowerProjectName | Set-Content $_
-}
 Get-ChildItem ".\*.asmdef" -Recurse | ForEach-Object -Process {
-    (Get-Content $_) -Replace $templateVar, $lowerProjectName | Set-Content $_
+    (Get-Content $_) -Replace $templateVar, $ProjectName | Set-Content $_
 }
 
 #Rename files#
-ChildItem .\ -Recurse | Where-Object { $_.name -like "*$templateVar*"} | Rename-Item -NewName { $_.name -replace $templateVar, $lowerProjectName}
+ChildItem .\Documentation~ -Recurse | Where-Object { $_.name -like "*$templateVar*"} | Rename-Item -NewName { $_.name -replace $templateVar, $lowerProjectName}
+ChildItem .\ -Recurse | Where-Object { $_.name -like "*$templateVar*"} | Rename-Item -NewName { $_.name -replace $templateVar, $ProjectName}
 
 echo "package name: $ProjectName"

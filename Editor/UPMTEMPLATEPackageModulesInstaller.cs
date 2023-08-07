@@ -19,7 +19,7 @@ namespace RealityToolkit.UPMTEMPLATE.Editor
     public sealed class UPMTEMPLATEPackageModulesInstaller : IPackageModulesInstaller
     {
         /// <summary>
-        /// Statis initalizer for the installer instance.
+        /// Static initializer for the installer instance.
         /// </summary>
         static UPMTEMPLATEPackageModulesInstaller()
         {
@@ -66,7 +66,7 @@ namespace RealityToolkit.UPMTEMPLATE.Editor
             // Setup the configuration.
             var typedServiceConfiguration = new ServiceConfiguration<IUPMTEMPLATEModule>(serviceConfiguration.InstancedType.Type, serviceConfiguration.Name, serviceConfiguration.Priority, serviceConfiguration.RuntimePlatforms, serviceConfiguration.Profile);
 
-            // Make sure it's not already in the target profile.
+            // Make sure it is not already in the target profile.
             if (UPMTEMPLATEProfile.ServiceConfigurations.All(sc => sc.InstancedType.Type != serviceConfiguration.InstancedType.Type))
             {
                 UPMTEMPLATEProfile.AddConfiguration(typedServiceConfiguration);
