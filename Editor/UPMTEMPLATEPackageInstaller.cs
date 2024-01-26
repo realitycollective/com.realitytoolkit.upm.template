@@ -23,13 +23,13 @@ namespace RealityToolkit.UPMTEMPLATE.Editor
             EditorApplication.delayCall += CheckPackage;
         }
 
-        [MenuItem(ServiceFrameworkPreferences.Editor_Menu_Keyword + "/Reality Toolkit/Packages/Install UPMTEMPLATE Package Assets...", true)]
+        [MenuItem(RealityToolkitPreferences.Editor_Menu_Keyword + "/Packages/Install UPMTEMPLATE Package Assets...", true)]
         private static bool ImportPackageAssetsValidation()
         {
             return !Directory.Exists($"{destinationPath}{Path.DirectorySeparatorChar}");
         }
 
-        [MenuItem(ServiceFrameworkPreferences.Editor_Menu_Keyword + "/Reality Toolkit/Packages/Install UPMTEMPLATE Package Assets...")]
+        [MenuItem(RealityToolkitPreferences.Editor_Menu_Keyword + "/Packages/Install UPMTEMPLATE Package Assets...")]
         private static void ImportPackageAssets()
         {
             EditorPreferences.Set($"{nameof(UPMTEMPLATEPackageInstaller)}.Assets", false);
